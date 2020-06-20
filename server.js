@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const fs = require('fs')
 const path = require('path')
 
@@ -44,9 +48,9 @@ app.use((error, req, res, next) => {
   res.json({message: error.message || 'Unknown error occurred'})
 })
 
-mongoose.connect('mongodb+srv://stepanova:@cluster0-xdon8.mongodb.net/eternity?retryWrites=true&w=majority')
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-xdon8.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`)
 .then(() => {
-  app.listen(5000, () => { console.log("API listening on port 5000") })
+  app.listen(process.env.PORT || 5000, () => { console.log("API listening on port 5000") })
 })
 .catch(err => {
   console.log(err)
